@@ -1,15 +1,10 @@
-const express = require('express');
-const app = express();
+if (!process.env.APP_SECRET) {
+  throw new Error('You need to set the APP_SECRET environment variable');
+}
+
 const PORT = process.env.PORT || 3000;
-const rabbitRouter = require(__dirname + '/routers/rabbitRouter');
-const slugRouter = require(__dirname + '/routers/slugRouter');
-// const authRouter = require(__dirname + '/routers/authRouter');
-const mongoose = require('mongoose');
+const app = require(__dirname + '/server/_server.js');
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/slug_rabbit_db');
-
-app.use('/api', rabbitRouter);
-app.use('/api', slugRouter);
-// app.use('/api', authRouter);
-
-app.listen(PORT, () => {console.log('server up on ' + PORT);});
+app.listen(PORT, 'mongodb://localhost/slug_rabbit_dev_app', () => {
+  console.log('server up on ' + PORT);
+});
